@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: rgb(55, 100, 144);
+}
+
+.welcomeSign {
+    font-size: 72px;
+}
