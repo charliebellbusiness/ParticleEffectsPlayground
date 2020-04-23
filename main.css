@@ -4,6 +4,14 @@ body {
     background: rgb(55, 100, 144);
 }
 
+/* canvas {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+} */
+
 .welcomeSign {
     font-size: 72px;
+    position: absolute;
 }
+
