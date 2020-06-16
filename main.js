@@ -1,3 +1,5 @@
+import { writeCenteredMessage, countVisibleParticles} from "./universal.module.js";
+
 const particles = [];
 const vW = window.innerWidth;
 const vH = window.innerHeight;
@@ -11,7 +13,11 @@ function setup() {
     for(let i = 0; i < particlesLength; i++) {
         particles.push(new Particle());
     }
+
+    
 }
+
+
 
 function draw() {
     
@@ -19,35 +25,23 @@ function draw() {
     
     //There has to be a more optimized way to do this because I am SO tired of my MacBook running like a jet engine when the particle count gets higher. Optimize the background function AND LET THE PARTICLE CHAOS BEGIN.
 
-    background(55, 100, 144)
+    background(55, 100, 144);
 
-    // Setting constants for referencing element context and element more easily
-    var ctx = document.getElementById('defaultCanvas0').getContext('2d'); //Reference 2d context of canvas
-    var canvas =  document.getElementById('defaultCanvas0') //Reference canvas
+    // Define canvas, properties, and context\
 
-    // Canvas font styling
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.font = '5vw helvetica';
+    var canvas =  document.getElementById('defaultCanvas0');
+    var ctx = canvas.getContext('2d');
+
+    var cW = canvas.width;
+    var cH = canvas.height;
+
+    // Get amount of particles on screen. Message based on amount of particles
+
+    if (countVisibleParticles(particles) > particles.length / 2) {
     
-    // Get the Font Height of the text for future use
-    var approxFontHeight = parseInt(ctx.font);
+    writeCenteredMessage('welcome to particle effects playground', 'center', 'bottom', '5vw helvetica', ctx, cW, cH);
 
-    // Use the visual width to center horizontally, then use visual height and font height to center text vertically. Font height is to negate text font offset. Message changes based on amount of particles not undefined
-
-    function checkParticlesUndefined(particle) {
-       return particle != undefined;
-    }
-
-    // Get length of particles that are not undefined.
-    if (particles.filter(checkParticlesUndefined).length > particles.length / 2) {
-
-    ctx.fillText('welcome to particle effects playground', vW / 2, (vH / 2) + approxFontHeight / 4)
-
-    } else { ctx.fillText('choose more physics games above', vW / 2, (vH / 2) + approxFontHeight / 4) }
-
-    console.log(particles.filter(checkParticlesUndefined).length)
-    console.log(particles.length)
+    } else { writeCenteredMessage('choose more physics games above', 'center', 'bottom', '5vw helvetica', ctx, cW, cH)  }
 
     // For each particle, reference Particle class functions listed below
     particles.forEach((p) => {
@@ -55,8 +49,6 @@ function draw() {
         p.draw();
         p.checkParticles();
     })
-
-
 
 }
 
@@ -115,7 +107,7 @@ class Particle {
     // Get statuses of particles such as position, amount, velocity.
     checkParticles() {
         particles.forEach(particle => {
-            const d = dist(this.pos.x, this.pos.y, particle.pos.x, particle.pos.y)
+            const d = dist(this.pos.x, this.pos.y, particle.pos.x, particle.pos.y) // Calculate distance between two particles, this and each other particle
 
             if(d < 120) {
                 stroke('rgba(255,255,50, 0.1)')
@@ -126,3 +118,6 @@ class Particle {
         
     }
 }
+
+window.setup = setup;
+window.draw = draw;
